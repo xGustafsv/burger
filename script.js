@@ -1,236 +1,218 @@
-let carrinho = [];
-let quantidades = {};
+// Objeto para armazenar os itens do carrinho
+let cart = {};
 
-function alterarQuantidade(produto, delta) {
-  if (!quantidades[produto]) quantidades[produto] = 0;
-  quantidades[produto] = Math.max(0, quantidades[produto] + delta);
-  document.getElementById(`qtd-${produto}`).textContent = quantidades[produto];
+// Preços dos itens
+const itemPrices = {
+    'burger-classico': 25.00,
+    'burger-bacon': 32.00,
+    'burger-deluxe': 38.00,
+    'burger-duplo': 45.00,
+    'espeto-carne': 12.00,
+    'espeto-frango': 10.00,
+    'espeto-linguica': 8.00,
+    'espeto-coracaozinho': 9.00,
+    'refrigerante': 5.00,
+    'agua': 3.00,
+    'suco': 7.00
+};
+
+// Nomes dos itens
+const itemNames = {
+    'burger-classico': 'Burger Clássico',
+    'burger-bacon': 'Burger Bacon',
+    'burger-deluxe': 'Burger Deluxe',
+    'burger-duplo': 'Burger Duplo',
+    'espeto-carne': 'Espeto de Carne',
+    'espeto-frango': 'Espeto de Frango',
+    'espeto-linguica': 'Espeto de Linguiça',
+    'espeto-coracaozinho': 'Espeto de Coraçãozinho',
+    'refrigerante': 'Refrigerante Lata',
+    'agua': 'Água Mineral',
+    'suco': 'Suco Natural'
+};
+
+// Função para alterar quantidade
+function changeQuantity(itemId, change) {
+    if (!cart[itemId]) {
+        cart[itemId] = 0;
+    }
+    
+    cart[itemId] += change;
+    
+    if (cart[itemId] < 0) {
+        cart[itemId] = 0;
+    }
+    
+    if (cart[itemId] === 0) {
+        delete cart[itemId];
+    }
+    
+    updateDisplay();
 }
 
-function adicionarAoCarrinho(produto, preco, categoria) {
-  const quantidade = quantidades[produto] || 0;
-  if (quantidade === 0) {
-    mostrarToast('Selecione a quantidade primeiro!', 'error');
-    return;
-  }
-  
-  for (let i = 0; i < quantidade; i++) {
-    carrinho.push({ produto, preco, categoria });
-  }
-  
-  quantidades[produto] = 0;
-  document.getElementById(`qtd-${produto}`).textContent = 0;
-  
-  atualizarCarrinho();
-  mostrarToast(`${quantidade}x ${produto} adicionado ao carrinho!`);
+// Função para atualizar a exibição
+function updateDisplay() {
+    // Atualizar contadores
+    Object.keys(itemPrices).forEach(itemId => {
+        const qtyElement = document.getElementById(`qty-${itemId}`);
+        if (qtyElement) qtyElement.textContent = cart[itemId] || 0;
+    });
+    
+    // Atualizar resumo do pedido
+    updateOrderSummary();
+    
+    // Atualizar botão de envio
+    updateSubmitButton();
 }
 
-function removerDoCarrinho(index) {
-  carrinho.splice(index, 1);
-  atualizarCarrinho();
-  mostrarToast('Item removido do carrinho');
-}
-
-function atualizarCarrinho() {
-  const carrinhoVazio = document.getElementById('carrinho-vazio');
-  const carrinhoItens = document.getElementById('carrinho-itens');
-  const totalContainer = document.getElementById('total-container');
-  const totalElement = document.getElementById('total');
-  
-  if (carrinho.length === 0) {
-    carrinhoVazio.classList.remove('hidden');
-    carrinhoItens.innerHTML = '';
-    totalContainer.classList.add('hidden');
-    return;
-  }
-  
-  carrinhoVazio.classList.add('hidden');
-  totalContainer.classList.remove('hidden');
-  
-  // Agrupar itens iguais
-  const itensAgrupados = {};
-  carrinho.forEach(item => {
-    if (itensAgrupados[item.produto]) {
-      itensAgrupados[item.produto].quantidade++;
+// Função para atualizar resumo do pedido
+function updateOrderSummary() {
+    const summaryItems = document.getElementById('summaryItems');
+    const emptyCart = document.getElementById('emptyCart');
+    const totalAmount = document.getElementById('totalAmount');
+    const totalValue = document.getElementById('totalValue');
+    
+    summaryItems.innerHTML = '';
+    let total = 0;
+    let hasItems = false;
+    
+    Object.keys(cart).forEach(itemId => {
+        if (cart[itemId] > 0) {
+            hasItems = true;
+            const itemTotal = cart[itemId] * itemPrices[itemId];
+            total += itemTotal;
+            
+            const itemElement = document.createElement('div');
+            itemElement.className = 'summary-item';
+            itemElement.innerHTML = `
+                <span>${cart[itemId]}x ${itemNames[itemId]}</span>
+                <span>R$ ${itemTotal.toFixed(2).replace('.', ',')}</span>
+            `;
+            summaryItems.appendChild(itemElement);
+        }
+    });
+    
+    if (hasItems) {
+        emptyCart.style.display = 'none';
+        totalAmount.style.display = 'block';
+        totalValue.textContent = total.toFixed(2).replace('.', ',');
     } else {
-      itensAgrupados[item.produto] = {
-        ...item,
-        quantidade: 1
-      };
+        emptyCart.style.display = 'block';
+        totalAmount.style.display = 'none';
     }
-  });
-  
-  carrinhoItens.innerHTML = '';
-  let total = 0;
-  
-  Object.values(itensAgrupados).forEach((item, index) => {
-    const itemElement = document.createElement('div');
-    itemElement.className = 'carrinho-item';
-    itemElement.innerHTML = `
-      <div>
-        <strong>${item.produto}</strong> (${item.quantidade}x)
-        <br><small>${item.categoria}</small>
-      </div>
-      <div>
-        <span>R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
-        <button class="btn-remover" onclick="removerProdutoCompleto('${item.produto}')">Remover</button>
-      </div>
-    `;
-    carrinhoItens.appendChild(itemElement);
-    total += item.preco * item.quantidade;
-  });
-  
-  totalElement.textContent = total.toFixed(2).replace('.', ',');
 }
 
-function removerProdutoCompleto(produto) {
-  carrinho = carrinho.filter(item => item.produto !== produto);
-  atualizarCarrinho();
-  mostrarToast('Produto removido do carrinho');
+// Função para atualizar botão de envio
+function updateSubmitButton() {
+    const submitBtn = document.getElementById('submitBtn');
+    const hasItems = Object.keys(cart).some(itemId => cart[itemId] > 0);
+    submitBtn.disabled = !hasItems;
 }
 
-function selecionarPagamento(tipo) {
-  // Remove seleção anterior
-  document.querySelectorAll('.pagamento-opcao').forEach(opcao => {
-    opcao.classList.remove('selecionado');
-  });
-  
-  // Adiciona seleção atual
-  event.currentTarget.classList.add('selecionado');
-  document.getElementById(tipo).checked = true;
-  
-  // Mostra/esconde campo de troco
-  const trocoContainer = document.getElementById('troco-container');
-  if (tipo === 'dinheiro') {
-    trocoContainer.classList.remove('hidden');
-  } else {
-    trocoContainer.classList.add('hidden');
-  }
-}
+// Mostrar/esconder campo de troco
+document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const changeGroup = document.getElementById('changeGroup');
+        if (this.value === 'dinheiro') {
+            changeGroup.style.display = 'block';
+        } else {
+            changeGroup.style.display = 'none';
+            document.getElementById('changeAmount').value = '';
+        }
+    });
+});
 
-function mostrarToast(mensagem, tipo = 'success') {
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.textContent = mensagem;
-  
-  if (tipo === 'error') {
-    toast.style.background = '#e74c3c';
-  }
-  
-  document.body.appendChild(toast);
-  
-  setTimeout(() => {
-    toast.remove();
-  }, 3000);
-}
+// Função para formatar telefone
+document.getElementById('customerPhone').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    value = value.replace(/^(\d{2})(\d)/, '($1) $2');
+    value = value.replace(/(\d{5})(\d)/, '$1-$2');
+    e.target.value = value;
+});
 
-function validarFormulario() {
-  const campos = ['nome', 'telefone', 'cep', 'rua', 'numero', 'bairro', 'cidade'];
-  
-  for (let campo of campos) {
-    const elemento = document.getElementById(campo);
-    if (!elemento.value.trim()) {
-      mostrarToast(`Por favor, preencha o campo ${elemento.previousElementSibling.textContent}`, 'error');
-      elemento.focus();
-      return false;
+// Função para enviar pedido
+document.getElementById('orderForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Verificar se há itens no carrinho
+    const hasItems = Object.keys(cart).some(itemId => cart[itemId] > 0);
+    if (!hasItems) {
+        alert('Adicione pelo menos um item ao carrinho!');
+        return;
     }
-  }
-  
-  const pagamento = document.querySelector('input[name="pagamento"]:checked');
-  if (!pagamento) {
-    mostrarToast('Por favor, selecione uma forma de pagamento', 'error');
-    return false;
-  }
-  
-  if (carrinho.length === 0) {
-    mostrarToast('Adicione pelo menos um item ao carrinho', 'error');
-    return false;
-  }
-  
-  return true;
-}
+    
+    // Coletar dados do formulário
+    const formData = new FormData(this);
+    const customerName = formData.get('customerName');
+    const customerPhone = formData.get('customerPhone');
+    const customerAddress = formData.get('customerAddress');
+    const paymentMethod = formData.get('paymentMethod');
+    const changeAmount = formData.get('changeAmount');
+    const observations = formData.get('observations');
+    
+    // Gerar resumo do pedido
+    let orderSummary = `🍔 *NOVO PEDIDO - DELICI'S BURGER & ESPETINHOS*\n\n`;
+    orderSummary += `👤 *Cliente:* ${customerName}\n`;
+    orderSummary += `📱 *Telefone:* ${customerPhone}\n`;
+    orderSummary += `📍 *Endereço:* ${customerAddress}\n\n`;
+    
+    orderSummary += `🛒 *ITENS DO PEDIDO:*\n`;
+    let total = 0;
+    
+    Object.keys(cart).forEach(itemId => {
+        if (cart[itemId] > 0) {
+            const itemTotal = cart[itemId] * itemPrices[itemId];
+            total += itemTotal;
+            orderSummary += `• ${cart[itemId]}x ${itemNames[itemId]} - R$ ${itemTotal.toFixed(2).replace('.', ',')}\n`;
+        }
+    });
+    
+    orderSummary += `\n💰 *TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
+    
+    orderSummary += `💳 *Forma de Pagamento:* `;
+    switch(paymentMethod) {
+        case 'pix':
+            orderSummary += `PIX\n`;
+            break;
+        case 'cartao':
+            orderSummary += `Cartão (Débito/Crédito)\n`;
+            break;
+        case 'dinheiro':
+            orderSummary += `Dinheiro`;
+            if (changeAmount) {
+                orderSummary += ` - Troco para R$ ${parseFloat(changeAmount).toFixed(2).replace('.', ',')}\n`;
+            } else {
+                orderSummary += `\n`;
+            }
+            break;
+    }
+    
+    if (observations) {
+        orderSummary += `\n📝 *Observações:* ${observations}\n`;
+    }
+    
+    orderSummary += `\n⏰ *Horário do Pedido:* ${new Date().toLocaleString('pt-BR')}`;
+    
+    // ALTERE ESTE NÚMERO PARA O WhatsApp DA HAMBURGUERIA
+    const whatsappNumber = '5511999999999'; // Substitua pelo número correto
+    
+    // Codificar mensagem para URL
+    const encodedMessage = encodeURIComponent(orderSummary);
+    
+    // Abrir WhatsApp
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+    
+    window.open(whatsappUrl, '_blank');
+    
+    // Limpar formulário e carrinho após envio
+    setTimeout(() => {
+        if (confirm('Pedido enviado! Deseja limpar o carrinho para um novo pedido?')) {
+            cart = {};
+            updateDisplay();
+            document.getElementById('orderForm').reset();
+        }
+    }, 1000);
+});
 
-function finalizarPedido() {
-  if (!validarFormulario()) return;
-  
-  // Coletar dados do formulário
-  const dadosCliente = {
-    nome: document.getElementById('nome').value,
-    telefone: document.getElementById('telefone').value,
-    cep: document.getElementById('cep').value,
-    rua: document.getElementById('rua').value,
-    numero: document.getElementById('numero').value,
-    bairro: document.getElementById('bairro').value,
-    cidade: document.getElementById('cidade').value,
-    complemento: document.getElementById('complemento').value,
-    pagamento: document.querySelector('input[name="pagamento"]:checked').value,
-    troco: document.getElementById('troco').value,
-    observacoes: document.getElementById('observacoes').value
-  };
-  
-  // Gerar relatório do pedido
-  let mensagem = `🍔 *PEDIDO - HAMBURGUERIA DO ZÉ*%0A%0A`;
-  
-  // Dados do cliente
-  mensagem += `👤 *CLIENTE:*%0A`;
-  mensagem += `Nome: ${dadosCliente.nome}%0A`;
-  mensagem += `Telefone: ${dadosCliente.telefone}%0A%0A`;
-  
-  // Endereço
-  mensagem += `📍 *ENDEREÇO DE ENTREGA:*%0A`;
-  mensagem += `${dadosCliente.rua}, ${dadosCliente.numero}%0A`;
-  if (dadosCliente.complemento) mensagem += `${dadosCliente.complemento}%0A`;
-  mensagem += `${dadosCliente.bairro} - ${dadosCliente.cidade}%0A`;
-  mensagem += `CEP: ${dadosCliente.cep}%0A%0A`;
-  
-  // Itens do pedido
-  mensagem += `🛒 *PEDIDO:*%0A`;
-  const itensAgrupados = {};
-  carrinho.forEach(item => {
-    if (itensAgrupados[item.produto]) {
-      itensAgrupados[item.produto].quantidade++;
-    } else {
-      itensAgrupados[item.produto] = { ...item, quantidade: 1 };
-    }
-  });
-  
-  let total = 0;
-  Object.values(itensAgrupados).forEach(item => {
-    const subtotal = item.preco * item.quantidade;
-    mensagem += `${item.quantidade}x ${item.produto} - R$ ${subtotal.toFixed(2)}%0A`;
-    total += subtotal;
-  });
-  
-  mensagem += `%0A💰 *TOTAL: R$ ${total.toFixed(2)}*%0A%0A`;
-  
-  // Forma de pagamento
-  mensagem += `💳 *PAGAMENTO:*%0A`;
-  const formasPagamento = {
-    'dinheiro': '💵 Dinheiro',
-    'cartao-debito': '💳 Cartão de Débito',
-    'cartao-credito': '💳 Cartão de Crédito',
-    'pix': '📱 PIX'
-  };
-  mensagem += `${formasPagamento[dadosCliente.pagamento]}%0A`;
-  
-  if (dadosCliente.pagamento === 'dinheiro' && dadosCliente.troco) {
-    const troco = parseFloat(dadosCliente.troco) - total;
-    if (troco > 0) {
-      mensagem += `Troco para: R$ ${parseFloat(dadosCliente.troco).toFixed(2)}%0A`;
-      mensagem += `Troco: R$ ${troco.toFixed(2)}%0A`;
-    }
-  }
-  
-  // Observações
-  if (dadosCliente.observacoes) {
-    mensagem += `%0A📝 *OBSERVAÇÕES:*%0A${dadosCliente.observacoes}%0A`;
-  }
-  
-  // Abrir WhatsApp
-  const numeroWhatsApp = '554599432205'; // Substitua pelo número real
-  const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensagem}`;
-  
-  window.open(urlWhatsApp, '_blank');
-  
-  mostrarToast('Redirecionando para o WhatsApp...');
-}
+// Inicializar display
+updateDisplay();

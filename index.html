@@ -1,258 +1,216 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Deliciu's - Delivery</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Deliciu's Burger & Espetinhos - Faça seu Pedido</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>🍔 Deliciu's burguer & espetinhos </h1>
-      <p>Os melhores hambúrgueres da cidade • Delivery rápido e seguro</p>
-    </div>
-    
-    <div class="content">
-      <!-- CARDÁPIO -->
-      <div class="section">
-        <h2>📋 Cardápio</h2>
-        
-        <div class="categoria">
-          <h3>🍔 Hambúrgueres</h3>
-          <div class="cardapio">
-            <div class="item">
-              <h4>X-Burguer</h4>
-              <div class="descricao">Pão, hambúrguer, queijo, alface, tomate</div>
-              <div class="preco">R$ 15,00</div>
-              <div class="controles">
-                <div class="quantidade-controle">
-                  <button class="btn-quantidade" onclick="alterarQuantidade('X-Burguer', -1)">-</button>
-                  <span class="quantidade" id="qtd-X-Burguer">0</span>
-                  <button class="btn-quantidade" onclick="alterarQuantidade('X-Burguer', 1)">+</button>
-                </div>
-                <button class="btn-adicionar" onclick="adicionarAoCarrinho('X-Burguer', 15.00, 'Hambúrguer')">Adicionar</button>
-              </div>
-            </div>
-            
-            <div class="item">
-              <h4>X-Salada</h4>
-              <div class="descricao">Pão, hambúrguer, queijo, alface, tomate, cebola</div>
-              <div class="preco">R$ 17,00</div>
-              <div class="controles">
-                <div class="quantidade-controle">
-                  <button class="btn-quantidade" onclick="alterarQuantidade('X-Salada', -1)">-</button>
-                  <span class="quantidade" id="qtd-X-Salada">0</span>
-                  <button class="btn-quantidade" onclick="alterarQuantidade('X-Salada', 1)">+</button>
-                </div>
-                <button class="btn-adicionar" onclick="adicionarAoCarrinho('X-Salada', 17.00, 'Hambúrguer')">Adicionar</button>
-              </div>
-            </div>
-            
-            <div class="item">
-              <h4>X-Bacon</h4>
-              <div class="descricao">Pão, hambúrguer, bacon, queijo, alface, tomate</div>
-              <div class="preco">R$ 19,00</div>
-              <div class="controles">
-                <div class="quantidade-controle">
-                  <button class="btn-quantidade" onclick="alterarQuantidade('X-Bacon', -1)">-</button>
-                  <span class="quantidade" id="qtd-X-Bacon">0</span>
-                  <button class="btn-quantidade" onclick="alterarQuantidade('X-Bacon', 1)">+</button>
-                </div>
-                <button class="btn-adicionar" onclick="adicionarAoCarrinho('X-Bacon', 19.00, 'Hambúrguer')">Adicionar</button>
-              </div>
-            </div>
-            
-            <div class="item">
-              <h4>X-Tudo</h4>
-              <div class="descricao">Pão, hambúrguer duplo, bacon, queijo, ovo, alface, tomate</div>
-              <div class="preco">R$ 25,00</div>
-              <div class="controles">
-                <div class="quantidade-controle">
-                  <button class="btn-quantidade" onclick="alterarQuantidade('X-Tudo', -1)">-</button>
-                  <span class="quantidade" id="qtd-X-Tudo">0</span>
-                  <button class="btn-quantidade" onclick="alterarQuantidade('X-Tudo', 1)">+</button>
-                </div>
-                <button class="btn-adicionar" onclick="adicionarAoCarrinho('X-Tudo', 25.00, 'Hambúrguer')">Adicionar</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="categoria">
-          <h3>🍟 Acompanhamentos</h3>
-          <div class="cardapio">
-            <div class="item">
-              <h4>Batata Frita</h4>
-              <div class="descricao">Porção individual de batatas fritas crocantes</div>
-              <div class="preco">R$ 10,00</div>
-              <div class="controles">
-                <div class="quantidade-controle">
-                  <button class="btn-quantidade" onclick="alterarQuantidade('Batata Frita', -1)">-</button>
-                  <span class="quantidade" id="qtd-Batata Frita">0</span>
-                  <button class="btn-quantidade" onclick="alterarQuantidade('Batata Frita', 1)">+</button>
-                </div>
-                <button class="btn-adicionar" onclick="adicionarAoCarrinho('Batata Frita', 10.00, 'Acompanhamento')">Adicionar</button>
-              </div>
-            </div>
-            
-            <div class="item">
-              <h4>Onion Rings</h4>
-              <div class="descricao">Anéis de cebola empanados e fritos</div>
-              <div class="preco">R$ 12,00</div>
-              <div class="controles">
-                <div class="quantidade-controle">
-                  <button class="btn-quantidade" onclick="alterarQuantidade('Onion Rings', -1)">-</button>
-                  <span class="quantidade" id="qtd-Onion Rings">0</span>
-                  <button class="btn-quantidade" onclick="alterarQuantidade('Onion Rings', 1)">+</button>
-                </div>
-                <button class="btn-adicionar" onclick="adicionarAoCarrinho('Onion Rings', 12.00, 'Acompanhamento')">Adicionar</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="categoria">
-          <h3>🥤 Bebidas</h3>
-          <div class="cardapio">
-            <div class="item">
-              <h4>Refrigerante Lata</h4>
-              <div class="descricao">Coca-Cola, Pepsi, Guaraná ou Fanta</div>
-              <div class="preco">R$ 5,00</div>
-              <div class="controles">
-                <div class="quantidade-controle">
-                  <button class="btn-quantidade" onclick="alterarQuantidade('Refrigerante Lata', -1)">-</button>
-                  <span class="quantidade" id="qtd-Refrigerante Lata">0</span>
-                  <button class="btn-quantidade" onclick="alterarQuantidade('Refrigerante Lata', 1)">+</button>
-                </div>
-                <button class="btn-adicionar" onclick="adicionarAoCarrinho('Refrigerante Lata', 5.00, 'Bebida')">Adicionar</button>
-              </div>
-            </div>
-            
-            <div class="item">
-              <h4>Suco Natural</h4>
-              <div class="descricao">Laranja, limão ou maracujá</div>
-              <div class="preco">R$ 8,00</div>
-              <div class="controles">
-                <div class="quantidade-controle">
-                  <button class="btn-quantidade" onclick="alterarQuantidade('Suco Natural', -1)">-</button>
-                  <span class="quantidade" id="qtd-Suco Natural">0</span>
-                  <button class="btn-quantidade" onclick="alterarQuantidade('Suco Natural', 1)">+</button>
-                </div>
-                <button class="btn-adicionar" onclick="adicionarAoCarrinho('Suco Natural', 8.00, 'Bebida')">Adicionar</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- CARRINHO -->
-      <div class="section">
-        <h2>🛒 Seu Pedido</h2>
-        <div class="carrinho-container">
-          <div id="carrinho-vazio" class="text-center">
-            <p>Seu carrinho está vazio. Adicione alguns itens do cardápio!</p>
-          </div>
-          <div id="carrinho-itens"></div>
-          <div id="total-container" class="hidden">
-            <div class="total">
-              Total: R$ <span id="total">0,00</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- DADOS DO CLIENTE -->
-      <div class="section">
-        <h2>📝 Dados do Cliente</h2>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="nome">Nome Completo *</label>
-            <input type="text" id="nome" required>
-          </div>
-          <div class="form-group">
-            <label for="telefone">Telefone *</label>
-            <input type="tel" id="telefone" placeholder="(00) 99999-9999" required>
-          </div>
-        </div>
-      </div>
-      
-      <!-- ENDEREÇO DE ENTREGA -->
-      <div class="section">
-        <h2>📍 Endereço de Entrega</h2>
-        <div class="form-group">
-          <label for="cep">CEP *</label>
-          <input type="text" id="cep" placeholder="00000-000" required>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="rua">Rua *</label>
-            <input type="text" id="rua" required>
-          </div>
-          <div class="form-group">
-            <label for="numero">Número *</label>
-            <input type="text" id="numero" required>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="bairro">Bairro *</label>
-            <input type="text" id="bairro" required>
-          </div>
-          <div class="form-group">
-            <label for="cidade">Cidade *</label>
-            <input type="text" id="cidade" required>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="complemento">Complemento</label>
-          <input type="text" id="complemento" placeholder="Apartamento, bloco, referência...">
-        </div>
-      </div>
-      
-      <!-- FORMA DE PAGAMENTO -->
-      <div class="section">
-        <h2>💳 Forma de Pagamento</h2>
-        <div class="pagamento-opcoes">
-          <div class="pagamento-opcao" onclick="selecionarPagamento('dinheiro')">
-            <input type="radio" name="pagamento" value="dinheiro" id="dinheiro">
-            <div>💵 Dinheiro</div>
-          </div>
-          <div class="pagamento-opcao" onclick="selecionarPagamento('cartao-debito')">
-            <input type="radio" name="pagamento" value="cartao-debito" id="cartao-debito">
-            <div>💳 Cartão de Débito</div>
-          </div>
-          <div class="pagamento-opcao" onclick="selecionarPagamento('cartao-credito')">
-            <input type="radio" name="pagamento" value="cartao-credito" id="cartao-credito">
-            <div>💳 Cartão de Crédito</div>
-          </div>
-          <div class="pagamento-opcao" onclick="selecionarPagamento('pix')">
-            <input type="radio" name="pagamento" value="pix" id="pix">
-            <div>📱 PIX</div>
-          </div>
-        </div>
-        
-        <div id="troco-container" class="form-group hidden">
-          <label for="troco">Troco para quanto?</label>
-          <input type="number" id="troco" placeholder="Ex: 50.00">
-        </div>
-      </div>
-      
-      <!-- OBSERVAÇÕES -->
-      <div class="section">
-        <h2>📝 Observações</h2>
-        <div class="form-group">
-          <textarea id="observacoes" rows="3" placeholder="Alguma observação especial sobre o pedido?"></textarea>
-        </div>
-      </div>
-      
-      <!-- BOTÃO FINALIZAR -->
-      <button class="btn-finalizar" onclick="finalizarPedido()">
-        🚚 Finalizar Pedido via WhatsApp
-      </button>
-    </div>
+    <div class="logo-container">
+  <img src="logo.png" alt="Logo" class="logo-img">
+  <div>
+    <div class="logo-text">DELICIU'S</div>
+    <div class="subtitle">Burger & Espetinhos</div>
+    <div class="tagline">Sabor Autêntico desde 2022</div>
   </div>
-  
-  <script src="script.js"></script>
+</div>
+
+
+        <div class="menu-section">
+            <h2 class="section-title">🍔 HAMBÚRGUERS</h2>
+            <div class="menu-grid" id="burgers">
+                <div class="menu-item" data-item="burger-classico" data-price="25.00">
+                    <div class="item-name">Burger Clássico</div>
+                    <div class="item-description">Hambúrguer 180g, queijo, alface, tomate, cebola e molho especial</div>
+                    <div class="item-price">R$ 25,00</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="changeQuantity('burger-classico', -1)">-</button>
+                        <span class="quantity-display" id="qty-burger-classico">0</span>
+                        <button class="quantity-btn" onclick="changeQuantity('burger-classico', 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item" data-item="burger-bacon" data-price="32.00">
+                    <div class="item-name">Burger Bacon</div>
+                    <div class="item-description">Hambúrguer 180g, bacon crocante, queijo cheddar, alface, tomate e molho barbecue</div>
+                    <div class="item-price">R$ 32,00</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="changeQuantity('burger-bacon', -1)">-</button>
+                        <span class="quantity-display" id="qty-burger-bacon">0</span>
+                        <button class="quantity-btn" onclick="changeQuantity('burger-bacon', 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item" data-item="burger-deluxe" data-price="38.00">
+                    <div class="item-name">Burger Deluxe</div>
+                    <div class="item-description">Hambúrguer 200g, queijo suíço, bacon, champignon, rúcula e molho especial</div>
+                    <div class="item-price">R$ 38,00</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="changeQuantity('burger-deluxe', -1)">-</button>
+                        <span class="quantity-display" id="qty-burger-deluxe">0</span>
+                        <button class="quantity-btn" onclick="changeQuantity('burger-deluxe', 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item" data-item="burger-duplo" data-price="45.00">
+                    <div class="item-name">Burger Duplo</div>
+                    <div class="item-description">Dois hambúrguers 180g, queijo duplo, bacon, alface, tomate e molho especial</div>
+                    <div class="item-price">R$ 45,00</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="changeQuantity('burger-duplo', -1)">-</button>
+                        <span class="quantity-display" id="qty-burger-duplo">0</span>
+                        <button class="quantity-btn" onclick="changeQuantity('burger-duplo', 1)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <h2 class="section-title">🍢 ESPETINHOS</h2>
+            <div class="menu-grid" id="espetinhos">
+                <div class="menu-item" data-item="espeto-carne" data-price="12.00">
+                    <div class="item-name">Espeto de Carne</div>
+                    <div class="item-description">Cubos de carne bovina temperados e grelhados na brasa</div>
+                    <div class="item-price">R$ 12,00</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="changeQuantity('espeto-carne', -1)">-</button>
+                        <span class="quantity-display" id="qty-espeto-carne">0</span>
+                        <button class="quantity-btn" onclick="changeQuantity('espeto-carne', 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item" data-item="espeto-frango" data-price="10.00">
+                    <div class="item-name">Espeto de Frango</div>
+                    <div class="item-description">Cubos de peito de frango temperados e grelhados na brasa</div>
+                    <div class="item-price">R$ 10,00</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="changeQuantity('espeto-frango', -1)">-</button>
+                        <span class="quantity-display" id="qty-espeto-frango">0</span>
+                        <button class="quantity-btn" onclick="changeQuantity('espeto-frango', 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item" data-item="espeto-linguica" data-price="8.00">
+                    <div class="item-name">Espeto de Linguiça</div>
+                    <div class="item-description">Linguiça artesanal grelhada na brasa</div>
+                    <div class="item-price">R$ 8,00</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="changeQuantity('espeto-linguica', -1)">-</button>
+                        <span class="quantity-display" id="qty-espeto-linguica">0</span>
+                        <button class="quantity-btn" onclick="changeQuantity('espeto-linguica', 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item" data-item="espeto-coracaozinho" data-price="9.00">
+                    <div class="item-name">Espeto de Coraçãozinho</div>
+                    <div class="item-description">Coração de frango temperado e grelhado na brasa</div>
+                    <div class="item-price">R$ 9,00</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="changeQuantity('espeto-coracaozinho', -1)">-</button>
+                        <span class="quantity-display" id="qty-espeto-coracaozinho">0</span>
+                        <button class="quantity-btn" onclick="changeQuantity('espeto-coracaozinho', 1)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <h2 class="section-title">🥤 BEBIDAS</h2>
+            <div class="menu-grid" id="bebidas">
+                <div class="menu-item" data-item="refrigerante" data-price="5.00">
+                    <div class="item-name">Refrigerante Lata</div>
+                    <div class="item-description">Coca-Cola, Guaraná, Fanta</div>
+                    <div class="item-price">R$ 5,00</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="changeQuantity('refrigerante', -1)">-</button>
+                        <span class="quantity-display" id="qty-refrigerante">0</span>
+                        <button class="quantity-btn" onclick="changeQuantity('refrigerante', 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item" data-item="agua" data-price="3.00">
+                    <div class="item-name">Água Mineral</div>
+                    <div class="item-description">Água mineral 500ml</div>
+                    <div class="item-price">R$ 3,00</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="changeQuantity('agua', -1)">-</button>
+                        <span class="quantity-display" id="qty-agua">0</span>
+                        <button class="quantity-btn" onclick="changeQuantity('agua', 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item" data-item="suco" data-price="7.00">
+                    <div class="item-name">Suco Natural</div>
+                    <div class="item-description">Laranja, Limão, Maracujá</div>
+                    <div class="item-price">R$ 7,00</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="changeQuantity('suco', -1)">-</button>
+                        <span class="quantity-display" id="qty-suco">0</span>
+                        <button class="quantity-btn" onclick="changeQuantity('suco', 1)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-form">
+            <div class="order-summary" id="orderSummary">
+                <div class="summary-title">📋 Resumo do Pedido</div>
+                <div class="empty-cart" id="emptyCart">Seu carrinho está vazio</div>
+                <div id="summaryItems"></div>
+                <div class="summary-total" id="totalAmount" style="display: none;">
+                    Total: R$ <span id="totalValue">0,00</span>
+                </div>
+            </div>
+
+            <form id="orderForm">
+                <h2 class="section-title">📋 Dados para Entrega</h2>
+                
+                <div class="form-group">
+                    <label for="customerName">Nome Completo *</label>
+                    <input type="text" id="customerName" name="customerName" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="customerPhone">Telefone/WhatsApp *</label>
+                    <input type="tel" id="customerPhone" name="customerPhone" required placeholder="(11) 99999-9999" />
+                </div>
+
+                <div class="form-group">
+                    <label for="customerAddress">Endereço Completo *</label>
+                    <textarea id="customerAddress" name="customerAddress" rows="3" required placeholder="Rua, número, bairro, cidade, CEP"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentMethod">Forma de Pagamento *</label>
+                    <div class="payment-options">
+                        <div class="payment-option">
+                            <label>
+                                <input type="radio" name="paymentMethod" value="pix" required /> PIX
+                            </label>
+                        </div>
+                        <div class="payment-option">
+                            <label>
+                                <input type="radio" name="paymentMethod" value="cartao" required /> Cartão (Débito/Crédito)
+                            </label>
+                        </div>
+                        <div class="payment-option">
+                            <label>
+                                <input type="radio" name="paymentMethod" value="dinheiro" required /> Dinheiro
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" id="changeGroup" style="display: none;">
+                    <label for="changeAmount">Troco para quanto?</label>
+                    <input type="number" id="changeAmount" name="changeAmount" placeholder="Ex: 50.00" step="0.01" />
+                </div>
+
+                <div class="form-group">
+                    <label for="observations">Observações</label>
+                    <textarea id="observations" name="observations" rows="3" placeholder="Ponto da carne, retirar ingredientes, etc."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn" disabled>
+                    🚀 Enviar Pedido para WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
